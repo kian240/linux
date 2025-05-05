@@ -1,18 +1,165 @@
-Linux kernel
-============
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Game: Unlock the Heart</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f8ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .quiz-container {
+            width: 80%;
+            max-width: 500px;
+            background-color: #ffb6c1;
+            border-radius: 10px;
+            padding: 20px;
+            border: 2px solid #ff6347;
+        }
+        h1 {
+            color: #e60000;
+        }
+        .question {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+        .options {
+            margin-bottom: 20px;
+        }
+        .options button {
+            background-color: #ff1493;
+            color: white;
+            font-size: 1em;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 10px;
+            transition: background-color 0.3s;
+        }
+        .options button:hover {
+            background-color: #ff6347;
+        }
+        #secretMessage {
+            display: none;
+            color: #ff1493;
+            font-size: 2em;
+            font-weight: bold;
+            margin-top: 20px;
+            animation: pop 0.5s ease-in-out;
+        }
+        @keyframes pop {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .next-btn {
+            background-color: #32cd32;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container" id="quizContainer">
+        <h1>Quiz Game: Unlock the Heart</h1>
+        <div id="question-container">
+            <div class="question" id="question">Question will appear here!</div>
+            <div class="options" id="options"></div>
+            <button id="next-btn" class="next-btn" style="display: none;" onclick="nextQuestion()">Next Question</button>
+        </div>
+    </div>
 
-There are several guides for kernel developers and users. These guides can
-be rendered in a number of formats, like HTML and PDF. Please read
-Documentation/admin-guide/README.rst first.
+    <p id="secretMessage">You're guilty under Section 378, for stealing my heart! ❤️🫶🍑🤭</p>
 
-In order to build the documentation, use ``make htmldocs`` or
-``make pdfdocs``.  The formatted documentation can also be read online at:
+    <script>
+        const questions = [
+            {
+                question: "What is my favorite thing?",
+                options: ["Pizza", "Gyatt", "Football", "Movies"],
+                answer: "Gyatt"
+            },
+            {
+                question: "Who is my favorite cricketer?",
+                options: ["Virat Kohli", "MS Dhoni", "Sachin Tendulkar", "Rohit Sharma"],
+                answer: "MS Dhoni"
+            },
+            {
+                question: "What is my nickname?",
+                options: ["P", "Hayaboo", "Shri Skhii", "Dhoni"],
+                answer: "P"
+            }
+        ];
 
-    https://www.kernel.org/doc/html/latest/
+        let currentQuestionIndex = 0;
+        const secretMessage = document.getElementById("secretMessage");
+        const nextBtn = document.getElementById("next-btn");
+        const optionsContainer = document.getElementById("options");
+        const questionContainer = document.getElementById("question");
 
-There are various text files in the Documentation/ subdirectory,
-several of them using the reStructuredText markup notation.
+        // Start the quiz
+        function startQuiz() {
+            showQuestion();
+        }
 
-Please read the Documentation/process/changes.rst file, as it contains the
-requirements for building and running the kernel, and information about
-the problems which may result by upgrading your kernel.
+        // Display current question
+        function showQuestion() {
+            const currentQuestion = questions[currentQuestionIndex];
+            questionContainer.textContent = currentQuestion.question;
+
+            // Clear previous options
+            optionsContainer.innerHTML = '';
+
+            // Display options
+            currentQuestion.options.forEach(option => {
+                const button = document.createElement("button");
+                button.textContent = option;
+                button.onclick = () => checkAnswer(option);
+                optionsContainer.appendChild(button);
+            });
+        }
+
+        // Check if the selected answer is correct
+        function checkAnswer(selectedAnswer) {
+            const currentQuestion = questions[currentQuestionIndex];
+
+            if (selectedAnswer === currentQuestion.answer) {
+                nextBtn.style.display = 'block';
+            } else {
+                alert("Wrong answer! Try again.");
+            }
+        }
+
+        // Move to next question
+        function nextQuestion() {
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex < questions.length) {
+                nextBtn.style.display = 'none';
+                showQuestion();
+            } else {
+                unlockMessage();
+            }
+        }
+
+        // Show secret message when quiz is completed
+        function unlockMessage() {
+            secretMessage.style.display = 'block';
+        }
+
+        // Initialize the quiz
+        startQuiz();
+    </script>
+</body>
+</html>
